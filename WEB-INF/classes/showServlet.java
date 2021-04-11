@@ -1,0 +1,58 @@
+// To save as "ebookshop\WEB-INF\classes\QueryServlet.java".
+import java.io.*;
+import java.sql.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
+
+@WebServlet("/show")   // Configure the request URL for this servlet (Tomcat 7/Servlet 3.0 upwards)
+public class showServlet extends HttpServlet {
+
+   // The doGet() runs once per HTTP GET request to this servlet.
+   @Override
+   public void doGet(HttpServletRequest request, HttpServletResponse response)
+               throws ServletException, IOException {
+      // Set the MIME type for the response message
+      response.setContentType("text/html");
+      // Get a output writer to write the response message into the network socket
+      PrintWriter out = response.getWriter();
+      // Print an HTML page as the output of the query
+      out.println("<html> <head> <link rel=\"stylesheet\" type=\"text/css\" href=\"//fonts.googleapis.com/css?family=Open+Sans\" /> <style>$yellow:#f5ba1a; $black:#000000; $grey:#cccccc; body { font-family: Open Sans, Geneva, sans-serif; font-size: 14px; background: #f2f2f2; } .clearfix { &:after { content: \"\"; display: block; clear: both; visibility: hidden; height: 0; } } .form_wrapper { width: 500px; max-width: 100%; box-sizing: border-box; color:white; margin:  auto 0; position: relative; z-index: 1; border-top: 5px solid $yellow; -webkit-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1); -moz-box-shadow: 0 0 3px rgba(0, 0, 0, 0.1); box-shadow: 0 0 3px rgba(0, 0, 0, 0.1); -webkit-transform-origin: 50% 0%; transform-origin: 50% 0%; -webkit-transform: scale3d(1, 1, 1); transform: scale3d(1, 1, 1); -webkit-transition: none; transition: none; -webkit-animation: expand 0.8s 0.6s ease-out forwards; animation: expand 0.8s 0.6s ease-out forwards; opacity: 0; border-radius: 10px; background: white; box-shadow: 0 27px 55px 0 rgba(0, 0, 0, 0.3), 0 17px 17px 0 rgba(0, 0, 0, 0.15); .title_container { text-align: center; padding-bottom: 15px; } h3 { font-size: 1.1em; font-weight: normal; line-height: 1.5em; margin: 0; } label { font-size: 12px; } .row { margin: 10px -15px; >div { padding: 0 15px; box-sizing: border-box; } } .col_half { width: 50%; float: left; } .input_field { position: relative; margin-bottom: 20px; -webkit-animation: bounce 0.6s ease-out; animation: bounce 0.6s ease-out; >span { position: absolute; left: 0; top: 0; color: #333; height: 100%; border-right: 1px solid $grey; text-align: center; width: 30px; >i { padding-top: 100px; } } } .textarea_field { >span { >i { padding-top: 10px; } } } .button{background: $yellow; height: 35px; line-height: 35px; width: 100%; border: none; outline: none; cursor: pointer; color: #fff; font-size: 1.1em; margin-bottom: 10px; -webkit-transition: all 0.30s ease-in-out; -moz-transition: all 0.30s ease-in-out; -ms-transition: all 0.30s ease-in-out; transition: all 0.30s ease-in-out;} &[type=\"checkbox\"], &[type=\"radio\"] { border: 0; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; } } } .form_container { .row { .col_half.last { border-left: 1px solid $grey; } } } .checkbox_option{ label{ margin-right: 1em; position: relative; &:before { content: \"\"; display: inline-block; width: 0.5em; height: 0.5em; margin-right: 0.5em; vertical-align: -2px; border: 2px solid $grey; padding: 0.12em; background-color: transparent; background-clip: content-box; transition: all 0.2s ease; } &:after { border-right: 2px solid $black; border-top: 2px solid $black; content: \"\"; height: 20px; left: 2px; position: absolute; top: 7px; transform: scaleX(-1) rotate(135deg); transform-origin: left top; width: 7px; display: none; } } input { &:hover + label:before { border-color: $black; } &:checked + label { &:before { border-color: $black; } &:after { -moz-animation: check 0.8s ease 0s running; -webkit-animation: check 0.8s ease 0s running; animation: check 0.8s ease 0s running; display: block; width: 7px; height: 20px; border-color: $black; } } } } .radio_option { label { margin-right: 1em; &:before { content: \"\"; display: inline-block; width: 0.5em; height: 0.5em; margin-right: 0.5em; border-radius: 100%; vertical-align: -3px; border: 2px solid $grey; padding: 0.15em; background-color: transparent; background-clip: content-box; transition: all 0.2s ease; } } input { &:hover + label:before { border-color: $black; } &:checked + label:before { background-color: $black; border-color: $black; } } } .select_option { position: relative; width: 100%; select { display: inline-block; width: 100%; height: 35px; padding: 0px 15px; cursor: pointer; color: #7b7b7b; border: 1px solid $grey; border-radius: 0; background: #fff; appearance: none; -webkit-appearance: none; -moz-appearance: none; transition: all 0.2s ease; &::-ms-expand { display: none; } &:hover, &:focus { color: $black; background: #fafafa; border-color: $black; outline: none; } } } .select_arrow { position: absolute; top: calc(50% - 4px); right: 15px; width: 0; height: 0; pointer-events: none; border-width: 8px 5px 0 5px; border-style: solid; border-color: #7b7b7b transparent transparent transparent; } .select_option select { &:hover + .select_arrow, &:focus + .select_arrow { border-top-color: $black; } } .credit { position: relative; z-index: 1; text-align: center; padding: 15px; color: $yellow; a { color: darken($yellow,7%); } } @-webkit-keyframes check { 0% { height: 0; width: 0; } 25% { height: 0; width: 7px; } 50% { height: 20px; width: 7px; } } @keyframes check { 0% { height: 0; width: 0; } 25% { height: 0; width: 7px; } 50% { height: 20px; width: 7px; } } @-webkit-keyframes expand { 0% { -webkit-transform: scale3d(1,0,1); opacity:0; } 25% { -webkit-transform: scale3d(1,1.2,1); } 50% { -webkit-transform: scale3d(1,0.85,1); } 75% { -webkit-transform: scale3d(1,1.05,1); } 100% { -webkit-transform: scale3d(1,1,1);  opacity:1; } } @keyframes expand { 0% { -webkit-transform: scale3d(1,0,1); transform: scale3d(1,0,1);  opacity:0; } 25% { -webkit-transform: scale3d(1,1.2,1); transform: scale3d(1,1.2,1); } 50% { -webkit-transform: scale3d(1,0.85,1); transform: scale3d(1,0.85,1); } 75% { -webkit-transform: scale3d(1,1.05,1); transform: scale3d(1,1.05,1); } 100% { -webkit-transform: scale3d(1,1,1); transform: scale3d(1,1,1);  opacity:1; } } @-webkit-keyframes bounce { 0% { -webkit-transform: translate3d(0,-25px,0); opacity:0; } 25% { -webkit-transform: translate3d(0,10px,0); } 50% { -webkit-transform: translate3d(0,-6px,0); } 75% { -webkit-transform: translate3d(0,2px,0); } 100% { -webkit-transform: translate3d(0,0,0); opacity: 1; } } @keyframes bounce { 0% { -webkit-transform: translate3d(0,-25px,0); transform: translate3d(0,-25px,0); opacity:0; } 25% { -webkit-transform: translate3d(0,10px,0); transform: translate3d(0,10px,0); } 50% { -webkit-transform: translate3d(0,-6px,0); transform: translate3d(0,-6px,0); } 75% { -webkit-transform: translate3d(0,2px,0); transform: translate3d(0,2px,0); } 100% { -webkit-transform: translate3d(0,0,0); transform: translate3d(0,0,0); opacity: 1; } } @media (max-width: 600px) { .form_wrapper { .col_half { width: 100%; float: none; } } .bottom_row { .col_half { width: 50%; float: left; } } .form_container { .row { .col_half.last { border-left: none; } } } .remember_me { padding-bottom: 20px; } } h2{ width: 100%; display: flex; align-items: center; justify-content: center; height: 80px; font-size: 20px; font-weight: bold; background: #4aa0a8; border-radius: 10px 10px 10px 10px;} </style> <meta charset=\"  utf-8\"   /> <meta http-equiv=\" X-UA-Compatible\"  content=\" IE=edge,chrome=1\"    /> <meta name=\" viewport\"   content=\" width=device-width, initial-scale=1\"  > <title></title> <link href='https://fonts.googleapis.com/css?family=Lato:300,400|Montserrat:700' rel='stylesheet' type='text/css'> <style> @import url(//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css); @import url(//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css); </style> <link rel=\"stylesheet\"    href=\"https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/default_thank_you.css\"> <script src=\"https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/jquery-1.9.1.min.js\"   ></script> <script src=\"https://2-22-4-dot-lead-pages.appspot.com/static/lp918/min/html5shiv.js\" ></script> </head> <body style=\"height:100%;background-image:url('lorquest.jpg');background-repeat:repeat; font-family: 'Open Sans';margin-bottom:0\"> <center> <a href=\"index.html\" ><img src=\"lorquest.jpg\"   style=\"width:7%\"  ></a> <h4 class=\"site-header__title\"  data-lead-id=\"site-header-title\" style=\"color:#ff6459;text-shadow: 4px 4px #5252cc;\">");
+
+
+      try (
+         // Step 1: Allocate a database 'Connection' object
+         Connection conn = DriverManager.getConnection(
+               "jdbc:mysql://localhost:3306/clicker?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC",
+               "myuser", "xxxx");   // For MySQL
+               // The format is: "jdbc:mysql://hostname:port/databaseName", "username", "password"
+
+         // Step 2: Allocate a 'Statement' object in the Connection
+         Statement stmt = conn.createStatement();
+      ) {// Step 3 & 4: Execute a SQL SELECT query and Process the query result
+         // Retrieve the books' id. Can order more than one books.
+         String idshow = request.getParameter("idshow");
+         if (idshow != null) {
+         // Returns an array of Strings
+         String sqlStr = "SELECT * FROM questions WHERE id =" + idshow;
+            ResultSet rset = stmt.executeQuery(sqlStr);
+            while(rset.next()){
+            out.println("(Q"+idshow+")"+rset.getString("question"));
+            out.println("</h4> <div class=\"main-content\"  >  <div class=\"form_wrapper\" > <div class=\"form_container\"> <div class=\"title_container\"> </div> <div class=\"row clearfix\"> <h2 style=\"font-size:30;font-weight:700;color:white;text-shadow: 1px 1px #5252cc;\">A : " + rset.getString("ca"));
+            out.println("</h2> </div> </div> </div> </div> <div class=\"form_wrapper\" > <div class=\"form_container\"> <div class=\"title_container\"> </div> <div class=\"row clearfix\"> <h2 style=\"font-size:30;font-weight:700;color:white;text-shadow: 1px 1px #5252cc;\">B : " + rset.getString("cb"));
+            if(rset.getString("cc")!= null){out.println("</h2> </div> </div> </div> </div> <div class=\"form_wrapper\" > <div class=\"form_container\"> <div class=\"title_container\"> </div> <div class=\"row clearfix\"> <h2 style=\"font-size:30;font-weight:700;color:white;text-shadow: 1px 1px #5252cc;\">C : " + rset.getString("cc"));}
+            if(rset.getString("cd")!= null){out.println("</h2> </div> </div> </div> </div> <div class=\"form_wrapper\" > <div class=\"form_container\"> <div class=\"title_container\"> </div> <div class=\"row clearfix\"> <h2 style=\"font-size:30;font-weight:700;color:white;text-shadow: 1px 1px #5252cc;\">D : " + rset.getString("cd"));}
+            }
+         // Print the submit button and </form> end-tag
+         } else { // No book selected
+            out.println("<h3 class=\"main-content__body\" data-lead-id=\"main-content-body\">Please go back and select a book...</h3>");
+         }
+      }catch(Exception ex) {
+         out.println("<p>Error: Please Type In Your Unique ID</p>");
+         ex.printStackTrace();
+      }   // Step 5: Close conn and stmt - Done automatically by try-with-resources (JDK 7)
+ 
+      out.println("</h2> </div> </div> </div> </div></center> </body></html>");
+      out.close();
+   }
+}
